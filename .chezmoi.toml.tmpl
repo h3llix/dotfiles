@@ -3,7 +3,8 @@
 
 {{- $personal = promptBool "personal" -}}
 {{- $email := promptString "email" -}}
-
+{{- $name := "Gaurav Genani"}}
 [data]
     email = {{ $email | quote }}
     personal = {{ $personal }}
+    name = {{ $name | quote }}
