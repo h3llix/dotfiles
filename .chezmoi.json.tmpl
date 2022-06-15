@@ -1,0 +1,9 @@
+{{/* boolean feature tags */}}
+{{- $personal := true -}}{{/* true if this machine should have personal secrets from LastPass */}}
+
+{{- $personal = promptBool "personal" -}}
+{{- $email := promptString "email" -}}
+
+data:
+    email: {{ $email | quote }}
+    personal: {{ $personal }}
