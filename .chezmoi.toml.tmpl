@@ -1,8 +1,10 @@
 {{/* boolean feature tags */}}
 {{- $personal := true -}}{{/* true if this machine should have personal secrets from LastPass */}}
+{{- $docker := true -}}
 
-{{- $bwemail := "" -}}{{/* true if this machine should have personal secrets from LastPass */}}
-{{- $bwpass := "" -}}{{/* true if this machine should have personal secrets from LastPass */}}
+{{- $docker = promptBool "docker" -}}
+{{- $bwemail := "" -}}
+{{- $bwpass := "" -}}
 {{- $personal = promptBool "personal" -}}
 {{- if .personal -}}
 {{- $bwemail = promptString "bwemail" -}}
@@ -16,3 +18,4 @@
     name = {{ $name | quote }}
     bwemail = {{ $bwemail | quote }}
     bwpass = {{ $bwpass | quote }}
+    docker = {{ $docker }}
