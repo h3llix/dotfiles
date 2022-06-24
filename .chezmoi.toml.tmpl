@@ -1,11 +1,18 @@
 {{/* boolean feature tags */}}
 {{- $personal := true -}}{{/* true if this machine should have personal secrets from LastPass */}}
 
+{{- $bwemail := "" -}}{{/* true if this machine should have personal secrets from LastPass */}}
+{{- $bwpass := "" -}}{{/* true if this machine should have personal secrets from LastPass */}}
 {{- $personal = promptBool "personal" -}}
-
+{{- if .personal -}}
+{{- $bwemail = promptString "bwemail" -}}
+{{- $bwpass = promptString "bwpass" -}}
+{{- end -}}
 {{- $email := promptString "email" -}}
 {{- $name := "Gaurav Genani"}}
 [data]
     email = {{ $email | quote }}
     personal = {{ $personal }}
     name = {{ $name | quote }}
+    bwemail = {{ $bwemail | quote }}
+    bwpass = {{ $bwpass | quote }}
