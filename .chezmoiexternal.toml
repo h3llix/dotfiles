@@ -19,7 +19,7 @@
     type = "git-repo"
     url = "https://github.com/zsh-users/zsh-autosuggestions"
     refreshPeriod = "168h"
-[".oh-my-zsh/custom/plugins/zf-zsh-plugin"]
+[".oh-my-zsh/custom/plugins/fzf-zsh-plugin"]
     type = "git-repo"
     url = "https://github.com/unixorn/fzf-zsh-plugin.git"
     refreshPeriod = "168h"
