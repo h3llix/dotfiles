@@ -1,5 +1,7 @@
+{{- if .personal -}}
 [user]
 	email = {{ .email }} 
 	name = {{ .name }}
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+{{ end }}
