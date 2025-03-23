@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Add the current user to the docker group
+CURRENT_USER=$(logname)  # Get the original user who invoked sudo
+echo "Adding user '$CURRENT_USER' to the 'docker' group..."
+sudo usermod -aG docker "$CURRENT_USER"
+
+# Verify the user was added to the docker group
+if groups "$CURRENT_USER" | grep -q '\bdocker\b'; then
+  echo "User '$CURRENT_USER' successfully added to the 'docker' group."
+else
+  echo "Failed to add user '$CURRENT_USER' to the 'docker' group."
+  exit 1
+fi
+
+echo "Docker post installation steps done!, refresh this terminal or do `newgrp docker`"

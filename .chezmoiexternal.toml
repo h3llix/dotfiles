@@ -1,6 +1,6 @@
 [".oh-my-zsh"]
     type = "git-repo"
-    url = "https://github.com/ohmyzsh/ohmyzsh.git" 
+    url = "https://github.com/ohmyzsh/ohmyzsh" 
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
     type = "git-repo"
@@ -8,9 +8,7 @@
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/themes/powerlevel10k"]
     type = "archive"
-    url = "https://github.com/romkatv/powerlevel10k/archive/v1.16.1.tar.gz"
-    exact = true
-    stripComponents = 1
+    url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
     type = "git-repo"
     url = "https://github.com/zsh-users/zsh-autosuggestions"

@@ -1,21 +1,33 @@
-{{/* boolean feature tags */}}
-{{- $personal := true -}}{{/* true if this machine should have personal secrets from LastPass */}}
-{{- $docker := true -}}
+{{ $personal := promptBool "Is this a personal machine" }}
+{{ $work := false }}
+{{ $alma_security := false }}
+{{ if not $personal }}
+{{   $work = true }}
+{{   $company_choice := promptString "Company type (alma_security/...)" | lower }}
+{{   if eq $company_choice "alma_security" }}
+{{     $alma_security = true }}
+{{   else }}
+{{     $alma_security = true }}
+{{   end }}
+{{ end }}
 
-{{- $docker = promptBool "docker" -}}
-{{- $bwemail := "" -}}
-{{- $bwpass := "" -}}
-{{- $personal = promptBool "personal" -}}
-{{- if .personal -}}
-{{- $bwemail = promptString "bwemail" -}}
-{{- $bwpass = promptString "bwpass" -}}
-{{- end -}}
-{{- $email := promptString "email" -}}
-{{- $name := "Gaurav Genani"}}
+{{ if $personal }}
+bw_email = "{{ promptString "Bitwarden email" }}"
+bw_password = "{{ promptString "Bitwarden password" }}"
+{{ end }}
+
 [data]
-    email = {{ $email | quote }}
-    personal = {{ $personal }}
-    name = {{ $name | quote }}
-    bwemail = {{ $bwemail | quote }}
-    bwpass = {{ $bwpass | quote }}
-    docker = {{ $docker }}
+  # Environment type (directly from user input)
+  personal = {{ $personal }}
+  work = {{ $work }}
+  alma_security = {{ $alma_security }}
+  
+  name = "{{ promptString "Your full name" }}"
+  email = "{{ if $personal }}{{ promptString "Personal email" }}{{ else if $alma_security }}{{ promptString "Alma Security email (default: gaurav@alma.security)" | default "firstname.lastname@alma.security" }}{{ else }}{{ promptString "Other company email" }}{{ end }}"
+  
+  editor = "{{ promptString "Preferred editor (vim/nvim/code)" | default "nvim" }}"
+  terminal = "{{ promptString "Preferred terminal (alacritty/iterm/kitty)" | default "alacritty" }}"
+  
+  # Development preferences
+  install_personal = {{ promptBool "Install Personal Packages" }}
+  install_alma_packages = {{ promptBool "Install Alma specific packages" }}

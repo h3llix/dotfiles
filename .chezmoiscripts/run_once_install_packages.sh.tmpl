@@ -1,0 +1,107 @@
+#!/bin/bash
+# This script will be run only once when chezmoi apply is first run
+
+set -eufo pipefail
+
+# Function to install packages based on the system package manager
+install_packages() {
+  local packages=("$@")
+  
+  if [ ${#packages[@]} -eq 0 ]; then
+    echo "No packages specified for installation."
+    return 0
+  fi
+  
+  echo "Installing packages: ${packages[*]}"
+  
+  if command -v apt-get >/dev/null 2>&1; then
+    echo "Using apt package manager..."
+    sudo apt-get update
+    sudo apt-get install -y "${packages[@]}"
+    
+  elif command -v dnf >/dev/null 2>&1; then
+    echo "Using dnf package manager..."
+    sudo dnf update -y
+    sudo dnf install -y "${packages[@]}"
+    
+  elif command -v pacman >/dev/null 2>&1; then
+    echo "Using pacman package manager..."
+    sudo pacman -Syu --noconfirm
+    sudo pacman -S --noconfirm "${packages[@]}"
+    
+  elif command -v brew >/dev/null 2>&1; then
+    echo "Using Homebrew package manager..."
+    brew update
+    brew install "${packages[@]}"
+  else
+    echo "No supported package manager found."
+    return 1
+  fi
+  
+  echo "Successfully installed: ${packages[*]}"
+  return 0
+}
+
+# Define package lists
+common_packages=(
+  git
+  curl
+  wget
+  tmux
+  vim
+  zsh
+  htop
+  jq
+)
+
+# Install common packages
+echo "Installing common packages..."
+install_packages "${common_packages[@]}"
+
+# Install Oh My Zsh if not already installed
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo "Installing Oh My Zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+{{ if .personal -}}
+# Personal environment specific packages
+personal_packages=(
+  unzip
+)
+
+echo "Installing personal environment packages..."
+install_packages "${personal_packages[@]}"
+
+echo "Installing Bitwarden CLI..."
+wget https://github.com/bitwarden/cli/releases/download/v1.22.1/bw-linux-1.22.1.zip
+unzip bw-linux-1.22.1.zip
+chmod +x ./bw
+sudo mv ./bw /usr/local/bin
+bw login {{ .bw_email }} {{ .bw_password }}
+{{ end -}}
+
+{{- if .work }}
+# Work environment packages
+work_packages=(
+  openssh-server
+)
+
+echo "Installing work environment packages..."
+install_packages "${work_packages[@]}"
+
+{{- if .alma_security }}
+# Alma Security specific packages
+alma_packages=(
+  golang
+  docker.io
+  docker-compose
+)
+
+echo "Installing Alma Security specific packages..."
+install_packages "${alma_packages[@]}"
+# Additional Alma Security setup can go here
+{{- end }}
+{{- end }}
+
+echo "Package installation complete!"

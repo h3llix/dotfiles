@@ -1,7 +1,13 @@
-{{ if and (eq .chezmoi.os "linux") -}}
 #!/bin/bash
-
+{{ if eq .chezmoi.os "linux" }}
 set -eufo pipefail
 
-sudo chsh -s /usr/bin/zsh
-{{ end -}}
+# Check if Zsh is installed
+if ! command -v zsh &> /dev/null; then
+  echo "Zsh is not installed. Installing Zsh..."
+  sudo apt update && sudo apt install -y zsh
+fi
+
+# Change the default shell to Zsh
+sudo chsh -s /usr/bin/zsh "$(whoami)"
+{{ end }}
