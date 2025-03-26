@@ -7,8 +7,9 @@
     url = "https://github.com/zsh-users/zsh-syntax-highlighting.git" 
     refreshPeriod = "168h"
 [".oh-my-zsh/custom/themes/powerlevel10k"]
-    type = "archive"
-    url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
+    type = "git-repo"
+    url = "https://github.com/romkatv/powerlevel10k.git"
+    refreshPeriod = "168h"
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
     type = "git-repo"
     url = "https://github.com/zsh-users/zsh-autosuggestions"
